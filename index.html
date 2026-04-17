@@ -16,246 +16,278 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
 <body>
 <div id="app"></div>
 <script>
-const program = {
-  schedule: [
-    { day: "MON", label: "Lower — Quad Focus", color: "#4ae87a" },
-    { day: "TUE", label: "Upper — Push + Pull", color: "#e8534a" },
-    { day: "WED", label: "Rest", color: "#333" },
-    { day: "THU", label: "Lower — Glute + Ham", color: "#b44ae8" },
-    { day: "FRI", label: "Upper — Back + Arms", color: "#4a8fe8" },
-    { day: "SAT", label: "Rest", color: "#333" },
-    { day: "SUN", label: "Rest", color: "#333" },
-  ],
-  days: [
-    {
-      day: "Monday", label: "Lower — Quad Focus", color: "#4ae87a",
-      exercises: [
-        { name: "Leg Press", sets: 4, reps: "8–10", notes: "Feet shoulder-width, high foot placement, full range" },
-        { name: "Romanian Deadlift", sets: 3, reps: "10", notes: "Hinge at hips, feel the hamstring stretch" },
-        { name: "Leg Press (Close Stance)", sets: 3, reps: "12", notes: "Feet low and narrow for inner quad focus" },
-        { name: "Walking Lunges", sets: 3, reps: "12 each", notes: "Dumbbells, long stride" },
-        { name: "Leg Extension Machine", sets: 3, reps: "15", notes: "Squeeze at top, slow lower" },
-        { name: "Standing Calf Raise", sets: 4, reps: "20", notes: "Full range of motion" },
-      ],
-    },
-    {
-      day: "Tuesday", label: "Upper — Push + Pull", color: "#e8534a",
-      exercises: [
-        { name: "Dumbbell Bench Press", sets: 4, reps: "8–10", notes: "Moderate weight, full range" },
-        { name: "Cable Row (Seated)", sets: 4, reps: "10", notes: "Neutral grip, retract shoulder blades" },
-        { name: "Dumbbell Shoulder Press", sets: 3, reps: "10–12", notes: "Seated, controlled" },
-        { name: "Lat Pulldown", sets: 3, reps: "12", notes: "Wide grip, pull to collarbone" },
-        { name: "Lateral Raises", sets: 3, reps: "15", notes: "Light weight, strict form" },
-        { name: "Cable Tricep Pushdown", sets: 3, reps: "15", notes: "Rope attachment" },
-      ],
-    },
-    {
-      day: "Thursday", label: "Lower — Glute + Ham", color: "#b44ae8",
-      exercises: [
-        { name: "Barbell Hip Thrust", sets: 4, reps: "10–12", notes: "Squeeze glutes hard at top, 1s hold" },
-        { name: "Sumo Deadlift", sets: 4, reps: "6–8", notes: "Wide stance, drives glutes and inner thigh" },
-        { name: "Bulgarian Split Squat", sets: 3, reps: "10 each", notes: "Rear foot elevated, dumbbells" },
-        { name: "Lying Leg Curl Machine", sets: 3, reps: "12–15", notes: "Slow, controlled eccentric" },
-        { name: "Cable Kickback", sets: 3, reps: "15 each", notes: "Full glute extension" },
-        { name: "Seated Calf Raise", sets: 4, reps: "20", notes: "Soleus focus" },
-      ],
-    },
-    {
-      day: "Friday", label: "Upper — Back + Arms", color: "#4a8fe8",
-      exercises: [
-        { name: "Pull-Ups or Assisted", sets: 4, reps: "6–10", notes: "Full hang to chin over bar" },
-        { name: "Incline Dumbbell Press", sets: 3, reps: "10", notes: "30° incline, upper chest focus" },
-        { name: "Single-Arm Dumbbell Row", sets: 3, reps: "10 each", notes: "Heavy, elbow drives back" },
-        { name: "Face Pulls (Cable)", sets: 3, reps: "15", notes: "Rope at eye level, rear delts" },
-        { name: "Dumbbell Bicep Curl", sets: 3, reps: "12", notes: "Alternating, supinate at top" },
-        { name: "Plank + Dead Bug", sets: 3, reps: "30–45s", notes: "Core finisher" },
-      ],
-    },
-  ],
-  nutrition: [
-    { icon: "🥩", title: "Protein", text: "0.8–1g per lb of bodyweight. Chicken, eggs, lean beef, fish, Greek yogurt. Non-negotiable for muscle growth." },
-    { icon: "🍚", title: "Carbs", text: "Fuel your training. Rice, oats, fruit, potatoes around workouts. Muscle needs glycogen — don't fear carbs." },
-    { icon: "🥑", title: "Fats", text: "0.3–0.5g per lb. Eggs, olive oil, nuts, avocado. Support hormones and recovery." },
-    { icon: "📊", title: "Calories", text: "Slight surplus (200–300 kcal) if building muscle. Maintain or small deficit if leaning out. Consistency is everything." },
-    { icon: "💧", title: "Hydration", text: "3–4L water daily. Muscles are 75% water. Electrolytes if sweating heavily." },
-  ],
-  recovery: [
-    { icon: "😴", title: "Sleep", text: "7–9 hours. This is when muscle is actually built. Non-negotiable." },
-    { icon: "🧘", title: "Deload", text: "Every 8 weeks, drop volume and intensity by 40% for a week. Prevents burnout, drives supercompensation." },
-    { icon: "🚶", title: "Cardio", text: "2x/week optional light cardio — walking or cycling 20–30 min. Keeps conditioning without eating muscle." },
-    { icon: "💆", title: "Recovery Tools", text: "Foam roll and stretch post-session. Focus on hips, hamstrings, quads. Heat or sauna 2x/week if available." },
-  ],
-  progression: [
-    "Add weight when you hit the top of the rep range for all sets",
-    "Track every session — numbers don't lie",
-    "Progressive overload is the only mechanism of muscle growth",
-    "If a lift stalls for 2+ weeks, rotate the variation or technique",
-    "Mind-muscle connection over ego lifting — feel the target muscle working",
-  ],
-  periodization: [
-    ["Weeks 1–3","Accumulation","Higher volume, moderate weight. Learn movements, nail technique, build work capacity."],
-    ["Weeks 4–6","Intensification","Increase load 5–10%. Drop 1 set per exercise. Go heavier and push harder."],
-    ["Weeks 7–9","Peak Overload","Max effort. Push every working set close to failure. This is where growth happens."],
-    ["Week 10","Deload","Drop volume 40%. Same exercises, lighter weight. Let the adaptations absorb."],
-    ["Weeks 11–12","Re-accumulation","Restart the cycle at higher baseline weights. You're stronger now."],
-  ],
-  meals: [
-    ["Meal 1 — Pre-Train","4 eggs + oats + banana + black coffee"],
-    ["Meal 2 — Post-Train","200g chicken breast + 300g rice + greens"],
-    ["Meal 3 — Midday","Greek yogurt + berries + handful almonds"],
-    ["Meal 4 — Dinner","Salmon + sweet potato + olive oil + broccoli"],
-    ["Meal 5 — Before Bed","Cottage cheese or casein shake + milk"],
-  ],
+const DEFAULT_DAYS = [
+  {
+    day: "Monday", label: "Lower — Quad Focus", color: "#4ae87a",
+    exercises: [
+      { name: "Leg Press", sets: 4, reps: "8–10", notes: "Feet shoulder-width, high foot placement, full range" },
+      { name: "Romanian Deadlift", sets: 3, reps: "10", notes: "Hinge at hips, feel the hamstring stretch" },
+      { name: "Leg Press (Close Stance)", sets: 3, reps: "12", notes: "Feet low and narrow for inner quad focus" },
+      { name: "Walking Lunges", sets: 3, reps: "12 each", notes: "Dumbbells, long stride" },
+      { name: "Leg Extension Machine", sets: 3, reps: "15", notes: "Squeeze at top, slow lower" },
+      { name: "Standing Calf Raise", sets: 4, reps: "20", notes: "Full range of motion" },
+    ],
+  },
+  {
+    day: "Tuesday", label: "Upper — Push + Pull", color: "#e8534a",
+    exercises: [
+      { name: "Dumbbell Bench Press", sets: 4, reps: "8–10", notes: "Moderate weight, full range" },
+      { name: "Cable Row (Seated)", sets: 4, reps: "10", notes: "Neutral grip, retract shoulder blades" },
+      { name: "Dumbbell Shoulder Press", sets: 3, reps: "10–12", notes: "Seated, controlled" },
+      { name: "Lat Pulldown", sets: 3, reps: "12", notes: "Wide grip, pull to collarbone" },
+      { name: "Lateral Raises", sets: 3, reps: "15", notes: "Light weight, strict form" },
+      { name: "Cable Tricep Pushdown", sets: 3, reps: "15", notes: "Rope attachment" },
+    ],
+  },
+  {
+    day: "Thursday", label: "Lower — Glute + Ham", color: "#b44ae8",
+    exercises: [
+      { name: "Barbell Hip Thrust", sets: 4, reps: "10–12", notes: "Squeeze glutes hard at top, 1s hold" },
+      { name: "Sumo Deadlift", sets: 4, reps: "6–8", notes: "Wide stance, drives glutes and inner thigh" },
+      { name: "Bulgarian Split Squat", sets: 3, reps: "10 each", notes: "Rear foot elevated, dumbbells" },
+      { name: "Lying Leg Curl Machine", sets: 3, reps: "12–15", notes: "Slow, controlled eccentric" },
+      { name: "Cable Kickback", sets: 3, reps: "15 each", notes: "Full glute extension" },
+      { name: "Seated Calf Raise", sets: 4, reps: "20", notes: "Soleus focus" },
+    ],
+  },
+  {
+    day: "Friday", label: "Upper — Back + Arms", color: "#4a8fe8",
+    exercises: [
+      { name: "Pull-Ups or Assisted", sets: 4, reps: "6–10", notes: "Full hang to chin over bar" },
+      { name: "Incline Dumbbell Press", sets: 3, reps: "10", notes: "30° incline, upper chest focus" },
+      { name: "Single-Arm Dumbbell Row", sets: 3, reps: "10 each", notes: "Heavy, elbow drives back" },
+      { name: "Face Pulls (Cable)", sets: 3, reps: "15", notes: "Rope at eye level, rear delts" },
+      { name: "Dumbbell Bicep Curl", sets: 3, reps: "12", notes: "Alternating, supinate at top" },
+      { name: "Plank + Dead Bug", sets: 3, reps: "30–45s", notes: "Core finisher" },
+    ],
+  },
+];
+
+const SCHEDULE = [
+  { day:"MON", label:"Lower — Quad Focus", color:"#4ae87a" },
+  { day:"TUE", label:"Upper — Push + Pull", color:"#e8534a" },
+  { day:"WED", label:"Rest", color:"#333" },
+  { day:"THU", label:"Lower — Glute + Ham", color:"#b44ae8" },
+  { day:"FRI", label:"Upper — Back + Arms", color:"#4a8fe8" },
+  { day:"SAT", label:"Rest", color:"#333" },
+  { day:"SUN", label:"Rest", color:"#333" },
+];
+
+const ALTS = {
+  "Leg Press": [{name:"Hack Squat",sets:4,reps:"8–10",notes:"Deep, knees track toes"},{name:"Goblet Squat",sets:4,reps:"10–12",notes:"Dumbbell, upright torso"},{name:"Smith Machine Squat",sets:4,reps:"8–10",notes:"Feet slightly forward"}],
+  "Romanian Deadlift": [{name:"Stiff-Leg Deadlift",sets:3,reps:"10",notes:"Similar hinge, slightly more knee"},{name:"Nordic Curl",sets:3,reps:"6–8",notes:"Eccentric hamstring control"},{name:"Swiss Ball Leg Curl",sets:3,reps:"12",notes:"Hamstring isolation"}],
+  "Leg Press (Close Stance)": [{name:"Front Squat",sets:3,reps:"8",notes:"Barbell, upright torso, quad dominant"},{name:"Sissy Squat",sets:3,reps:"12",notes:"Extreme quad stretch"},{name:"Cyclist Squat",sets:3,reps:"12",notes:"Heels elevated, quad emphasis"}],
+  "Walking Lunges": [{name:"Reverse Lunge",sets:3,reps:"12 each",notes:"Easier on knees, step back"},{name:"Lateral Lunge",sets:3,reps:"10 each",notes:"Inner thigh and glute"},{name:"Step-Ups",sets:3,reps:"12 each",notes:"Box or bench, drive through heel"}],
+  "Leg Extension Machine": [{name:"Terminal Knee Extension",sets:3,reps:"15",notes:"Cable, VMO emphasis"},{name:"Straight Leg Raise",sets:3,reps:"20",notes:"Bodyweight, core + quad"},{name:"Spanish Squat (cable)",sets:3,reps:"12",notes:"Knee over toe, quad isolation"}],
+  "Standing Calf Raise": [{name:"Seated Calf Raise",sets:4,reps:"20",notes:"Soleus emphasis"},{name:"Single-Leg Calf Raise",sets:4,reps:"15 each",notes:"Bodyweight or dumbbell"},{name:"Leg Press Calf Raise",sets:4,reps:"20",notes:"Full stretch at bottom"}],
+  "Dumbbell Bench Press": [{name:"Barbell Bench Press",sets:4,reps:"6–8",notes:"Classic compound, heavier load"},{name:"Cable Chest Fly",sets:4,reps:"12",notes:"Constant tension through ROM"},{name:"Push-Up (weighted)",sets:4,reps:"10–15",notes:"Plate on back or feet elevated"}],
+  "Cable Row (Seated)": [{name:"Chest-Supported Row",sets:4,reps:"10",notes:"Dumbbell, removes lower back load"},{name:"Barbell Row",sets:4,reps:"8",notes:"Explosive up, controlled down"},{name:"TRX Row",sets:4,reps:"12",notes:"Bodyweight, adjust angle"}],
+  "Dumbbell Shoulder Press": [{name:"Barbell Overhead Press",sets:3,reps:"6–8",notes:"Standing or seated, heavier"},{name:"Arnold Press",sets:3,reps:"10–12",notes:"Rotation hits all 3 delt heads"},{name:"Cable Shoulder Press",sets:3,reps:"12",notes:"Constant tension, single arm"}],
+  "Lat Pulldown": [{name:"Pull-Up",sets:3,reps:"Max",notes:"Bodyweight, hardest version"},{name:"Single-Arm Lat Pulldown",sets:3,reps:"12 each",notes:"Greater ROM"},{name:"Straight-Arm Pulldown",sets:3,reps:"15",notes:"Isolates lats, no bicep"}],
+  "Lateral Raises": [{name:"Cable Lateral Raise",sets:3,reps:"15",notes:"Constant tension, slow eccentric"},{name:"Machine Lateral Raise",sets:3,reps:"15–20",notes:"Stable, good for high reps"},{name:"Leaning Lateral Raise",sets:3,reps:"15 each",notes:"Greater range at bottom"}],
+  "Cable Tricep Pushdown": [{name:"Overhead Tricep Extension",sets:3,reps:"12",notes:"Long head emphasis, cable or DB"},{name:"Skull Crusher",sets:3,reps:"10–12",notes:"EZ bar, lower to forehead"},{name:"Diamond Push-Up",sets:3,reps:"15",notes:"Bodyweight tricep alternative"}],
+  "Barbell Hip Thrust": [{name:"Dumbbell Hip Thrust",sets:4,reps:"12",notes:"Easier setup, same movement"},{name:"Cable Pull-Through",sets:4,reps:"15",notes:"Glute hinge, cable between legs"},{name:"Glute Bridge (elevated)",sets:4,reps:"15",notes:"Bodyweight or banded"}],
+  "Sumo Deadlift": [{name:"Conventional Deadlift",sets:4,reps:"5–6",notes:"More hamstring, less inner thigh"},{name:"Trap Bar Deadlift",sets:4,reps:"6–8",notes:"More quad-friendly, easier on back"},{name:"Single-Leg Deadlift",sets:4,reps:"8 each",notes:"Balance and hip stability"}],
+  "Bulgarian Split Squat": [{name:"Reverse Lunge",sets:3,reps:"12 each",notes:"Easier version, same muscles"},{name:"Single-Leg Leg Press",sets:3,reps:"12 each",notes:"Machine-based, lower risk"},{name:"Pistol Squat (assisted)",sets:3,reps:"8 each",notes:"TRX or doorframe for balance"}],
+  "Lying Leg Curl Machine": [{name:"Seated Leg Curl",sets:3,reps:"12–15",notes:"Hits distal hamstring more"},{name:"Swiss Ball Leg Curl",sets:3,reps:"10",notes:"Bodyweight, great stretch"},{name:"Nordic Curl",sets:3,reps:"5–8",notes:"Elite eccentric hamstring strength"}],
+  "Cable Kickback": [{name:"Donkey Kick (banded)",sets:3,reps:"20 each",notes:"Band around ankle"},{name:"Single-Leg RDL",sets:3,reps:"10 each",notes:"Balance + glute hinge"},{name:"Hip Abduction Machine",sets:3,reps:"20",notes:"Outer glute emphasis"}],
+  "Seated Calf Raise": [{name:"Standing Calf Raise",sets:4,reps:"20",notes:"Gastrocnemius emphasis"},{name:"Single-Leg Calf Raise",sets:4,reps:"15 each",notes:"Bodyweight or dumbbell"},{name:"Leg Press Calf Raise",sets:4,reps:"20",notes:"Full stretch, high reps"}],
+  "Pull-Ups or Assisted": [{name:"Lat Pulldown",sets:4,reps:"10",notes:"Machine version, easier to load"},{name:"Band-Assisted Pull-Up",sets:4,reps:"8",notes:"Band reduces bodyweight"},{name:"TRX Row",sets:4,reps:"12",notes:"Horizontal pull, easier"}],
+  "Incline Dumbbell Press": [{name:"Incline Barbell Press",sets:3,reps:"6–8",notes:"Heavier, upper chest focus"},{name:"Low-to-High Cable Fly",sets:3,reps:"12",notes:"Constant tension, upper chest"},{name:"Incline Push-Up",sets:3,reps:"15",notes:"Bodyweight, feet elevated"}],
+  "Single-Arm Dumbbell Row": [{name:"Cable Row (single arm)",sets:3,reps:"12 each",notes:"Constant tension through ROM"},{name:"Chest-Supported Row",sets:3,reps:"10",notes:"Removes lower back load"},{name:"Barbell Row",sets:3,reps:"8",notes:"Both arms, heavier load"}],
+  "Face Pulls (Cable)": [{name:"Rear Delt Fly (dumbbell)",sets:3,reps:"15",notes:"Bent over, strict form"},{name:"Band Pull-Apart",sets:3,reps:"20",notes:"Rear delt + rotator cuff"},{name:"Reverse Pec Deck",sets:3,reps:"15",notes:"Machine rear delt isolation"}],
+  "Dumbbell Bicep Curl": [{name:"Barbell Curl",sets:3,reps:"8–10",notes:"Heavier load, both arms"},{name:"Hammer Curl",sets:3,reps:"12",notes:"Brachialis + brachioradialis"},{name:"Incline Curl",sets:3,reps:"12",notes:"Long head stretch at bottom"}],
+  "Plank + Dead Bug": [{name:"Ab Wheel Rollout",sets:3,reps:"10",notes:"Full extension, hips stay high"},{name:"Cable Crunch",sets:3,reps:"15",notes:"Round the spine, not hip flex"},{name:"Hanging Leg Raise",sets:3,reps:"12",notes:"Posterior pelvic tilt at top"}],
 };
 
-// ─── State ───────────────────────────────────────────────────────────────────
-let state = {
-  activeTab: "program",
-  activeDay: 0,
-  tracking: null, // { dayIdx, exIdx, date }
-  logs: {},
-};
+const NUTRITION = [
+  {icon:"🥩",title:"Protein",text:"0.8–1g per lb of bodyweight. Chicken, eggs, lean beef, fish, Greek yogurt. Non-negotiable for muscle growth."},
+  {icon:"🍚",title:"Carbs",text:"Fuel your training. Rice, oats, fruit, potatoes around workouts. Muscle needs glycogen — don't fear carbs."},
+  {icon:"🥑",title:"Fats",text:"0.3–0.5g per lb. Eggs, olive oil, nuts, avocado. Support hormones and recovery."},
+  {icon:"📊",title:"Calories",text:"Slight surplus (200–300 kcal) if building muscle. Maintain or small deficit if leaning out. Consistency is everything."},
+  {icon:"💧",title:"Hydration",text:"3–4L water daily. Muscles are 75% water. Electrolytes if sweating heavily."},
+];
+const RECOVERY = [
+  {icon:"😴",title:"Sleep",text:"7–9 hours. This is when muscle is actually built. Non-negotiable."},
+  {icon:"🧘",title:"Deload",text:"Every 8 weeks, drop volume and intensity by 40% for a week. Prevents burnout, drives supercompensation."},
+  {icon:"🚶",title:"Cardio",text:"2x/week optional light cardio — walking or cycling 20–30 min. Keeps conditioning without eating muscle."},
+  {icon:"💆",title:"Recovery Tools",text:"Foam roll and stretch post-session. Focus on hips, hamstrings, quads. Heat or sauna 2x/week if available."},
+];
+const PROGRESSION = ["Add weight when you hit the top of the rep range for all sets","Track every session — numbers don't lie","Progressive overload is the only mechanism of muscle growth","If a lift stalls for 2+ weeks, rotate the variation or technique","Mind-muscle connection over ego lifting — feel the target muscle working"];
+const PERIODIZATION = [["Weeks 1–3","Accumulation","Higher volume, moderate weight. Learn movements, nail technique, build work capacity."],["Weeks 4–6","Intensification","Increase load 5–10%. Drop 1 set per exercise. Go heavier and push harder."],["Weeks 7–9","Peak Overload","Max effort. Push every working set close to failure. This is where growth happens."],["Week 10","Deload","Drop volume 40%. Same exercises, lighter weight. Let the adaptations absorb."],["Weeks 11–12","Re-accumulation","Restart the cycle at higher baseline weights. You're stronger now."]];
+const MEALS = [["Meal 1 — Pre-Train","4 eggs + oats + banana + black coffee"],["Meal 2 — Post-Train","200g chicken breast + 300g rice + greens"],["Meal 3 — Midday","Greek yogurt + berries + handful almonds"],["Meal 4 — Dinner","Salmon + sweet potato + olive oil + broccoli"],["Meal 5 — Before Bed","Cottage cheese or casein shake + milk"]];
 
-function todayStr() { return new Date().toISOString().slice(0, 10); }
+// ─── State ────────────────────────────────────────────────────────────────────
+let S = { tab:"program", day:0, tracking:null, editMode:false, swapModal:null, logs:{}, custom:null };
 
-function loadLogs() {
-  try { state.logs = JSON.parse(localStorage.getItem("sculpt-v2") || "{}"); } catch {}
+function days() { return S.custom ? JSON.parse(JSON.stringify(S.custom)) : JSON.parse(JSON.stringify(DEFAULT_DAYS)); }
+function today() { return new Date().toISOString().slice(0,10); }
+
+function load() {
+  try { const l=localStorage.getItem("sculpt-v2"); if(l) S.logs=JSON.parse(l); } catch{}
+  try { const c=localStorage.getItem("sculpt-custom-v1"); if(c) S.custom=JSON.parse(c); } catch{}
 }
+function saveLogs() { try{localStorage.setItem("sculpt-v2",JSON.stringify(S.logs));}catch{} }
+function saveCustom(d) { S.custom=d; try{localStorage.setItem("sculpt-custom-v1",JSON.stringify(d));}catch{} }
+function resetCustom() { S.custom=null; try{localStorage.removeItem("sculpt-custom-v1");}catch{} }
 
-function saveLogs() {
-  try { localStorage.setItem("sculpt-v2", JSON.stringify(state.logs)); } catch {}
-}
-
-function setLog(dayLabel, date, exName, setIdx, field, value) {
-  const key = `${dayLabel}|${date}`;
-  if (!state.logs[key]) state.logs[key] = {};
-  if (!state.logs[key][exName]) state.logs[key][exName] = {};
-  if (!state.logs[key][exName][setIdx]) state.logs[key][exName][setIdx] = {};
-  state.logs[key][exName][setIdx][field] = value;
+function setLog(label,date,ex,si,field,val) {
+  const k=`${label}|${date}`;
+  if(!S.logs[k])S.logs[k]={};
+  if(!S.logs[k][ex])S.logs[k][ex]={};
+  if(!S.logs[k][ex][si])S.logs[k][ex][si]={};
+  S.logs[k][ex][si][field]=val;
   saveLogs();
 }
 
-// ─── Render ───────────────────────────────────────────────────────────────────
-function render() {
-  const app = document.getElementById("app");
-  if (state.tracking) {
-    app.innerHTML = renderTracking();
-  } else {
-    app.innerHTML = renderMain();
-  }
-  attachEvents();
+function swapEx(di,ei,newEx) {
+  const d=days(); d[di].exercises[ei]={...newEx}; saveCustom(d); S.swapModal=null; render();
 }
 
-// ─── TRACKING SCREEN ─────────────────────────────────────────────────────────
-function renderTracking() {
-  const { dayIdx, exIdx, date } = state.tracking;
-  const tDay = program.days[dayIdx];
-  const ex = tDay.exercises[exIdx];
-  const tKey = `${tDay.label}|${date}`;
-  const exLog = ((state.logs[tKey] || {})[ex.name]) || {};
+// ─── RENDER ROOT ─────────────────────────────────────────────────────────────
+function render() {
+  const app=document.getElementById("app");
+  if(S.swapModal) app.innerHTML=renderSwap();
+  else if(S.tracking) app.innerHTML=renderTracking();
+  else app.innerHTML=renderMain();
+  bind();
+}
 
-  const allKeys = Object.keys(state.logs).filter(k => k.startsWith(tDay.label + "|") && k !== tKey).sort().reverse();
-  const prevKey = allKeys[0];
-  const prevExLog = prevKey ? ((state.logs[prevKey] || {})[ex.name] || {}) : null;
-  const hasPrev = prevExLog && Object.values(prevExLog).some(s => s.weight || s.reps);
+// ─── SWAP MODAL ───────────────────────────────────────────────────────────────
+function renderSwap() {
+  const {di,ei}=S.swapModal;
+  const d=days()[di]; const ex=d.exercises[ei]; const color=d.color;
+  const alts=ALTS[ex.name]||[];
 
-  const progress = ((exIdx + 1) / tDay.exercises.length * 100).toFixed(1);
-
-  let setsHtml = "";
-  for (let i = 0; i < ex.sets; i++) {
-    const s = exLog[i] || {};
-    const done = s.done;
-    const wPh = hasPrev ? (prevExLog[i]?.weight || "0") : "0";
-    const rPh = hasPrev ? (prevExLog[i]?.reps || ex.reps.split("–")[0]) : ex.reps.split("–")[0];
-    setsHtml += `
-      <div class="set-row ${done ? "set-done" : ""}" style="border-color:${done ? tDay.color + "55" : "#1e1e1e"};background:${done ? tDay.color + "1a" : "#111"}">
-        <div class="set-num" style="color:${done ? tDay.color : "#555"}">S${i+1}</div>
-        <input type="number" inputmode="decimal" placeholder="${wPh}" value="${s.weight || ""}" data-field="weight" data-set="${i}" class="set-input" />
-        <input type="number" inputmode="numeric" placeholder="${rPh}" value="${s.reps || ""}" data-field="reps" data-set="${i}" class="set-input" />
-        <button class="done-btn ${done ? "done-btn-checked" : ""}" data-set="${i}" style="background:${done ? tDay.color : "transparent"};border-color:${done ? tDay.color : "#333"};color:${done ? "#000" : "#444"}">✓</button>
-      </div>`;
-  }
-
-  let prevHtml = "";
-  if (hasPrev) {
-    let chips = "";
-    for (let i = 0; i < ex.sets; i++) {
-      const s = prevExLog[i] || {};
-      if (s.weight || s.reps) chips += `<div class="prev-chip">S${i+1}: ${s.weight ? s.weight+"kg" : "—"} × ${s.reps || "—"}</div>`;
-    }
-    prevHtml = `<div class="prev-box"><div class="prev-label">Last time (${prevKey.split("|")[1]})</div><div class="chip-row">${chips}</div></div>`;
-  }
-
-  const prevBtn = exIdx > 0 ? `<button class="nav-btn secondary" id="prevEx">← PREV</button>` : "";
-  const nextBtn = exIdx < tDay.exercises.length - 1
-    ? `<button class="nav-btn primary" id="nextEx" style="background:${tDay.color}">NEXT → ${tDay.exercises[exIdx+1].name.split(" ")[0]}</button>`
-    : `<button class="nav-btn primary" id="finishEx" style="background:${tDay.color}">✓ FINISH WORKOUT</button>`;
+  const altHtml=alts.map((a,i)=>`
+    <div class="alt-card" data-i="${i}" style="background:#111;border:1px solid #2a2a2a;border-radius:2px;padding:14px 16px;cursor:pointer;margin-bottom:8px;transition:border-color .15s">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div>
+          <div style="font-size:14px;color:#f0ede6;margin-bottom:4px">${a.name}</div>
+          <div style="font-size:11px;color:#666;font-style:italic">${a.notes}</div>
+        </div>
+        <div style="font-size:11px;color:${color};font-family:'Courier New',monospace;flex-shrink:0">${a.sets}×${a.reps}</div>
+      </div>
+    </div>`).join("");
 
   return `
   <div style="background:#0a0a0a;min-height:100vh">
     <div style="background:#111;border-bottom:1px solid #1e1e1e;padding:16px 20px;display:flex;align-items:center;gap:16px">
-      <button id="backBtn" style="background:none;border:none;color:#888;font-size:22px;padding:0;line-height:1;cursor:pointer">←</button>
-      <div style="flex:1">
-        <div style="font-size:10px;letter-spacing:4px;color:${tDay.color};text-transform:uppercase;font-family:'Courier New',monospace">${tDay.day} · ${date}</div>
+      <button id="closeSwap" style="background:none;border:none;color:#888;font-size:22px;padding:0;line-height:1">←</button>
+      <div>
+        <div style="font-size:10px;letter-spacing:4px;color:${color};text-transform:uppercase;font-family:'Courier New',monospace">Swap Exercise</div>
         <div style="font-size:17px;font-weight:800">${ex.name}</div>
       </div>
-      <div style="font-size:11px;color:#444;font-family:'Courier New',monospace">${exIdx+1}/${tDay.exercises.length}</div>
     </div>
-    <div style="height:2px;background:#1a1a1a"><div style="height:2px;background:${tDay.color};width:${progress}%;transition:width .3s"></div></div>
+    <div style="max-width:600px;margin:0 auto;padding:24px 16px">
+      ${alts.length?`<div style="font-size:10px;letter-spacing:4px;color:#444;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:14px">Suggested Alternatives</div>${altHtml}<div style="height:1px;background:#1e1e1e;margin:24px 0"></div>`:""}
+
+      <div style="font-size:10px;letter-spacing:4px;color:#444;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:14px">Custom Exercise</div>
+      <div style="background:#111;border:1px solid #2a2a2a;border-radius:2px;padding:16px;display:flex;flex-direction:column;gap:10px">
+        <div>
+          <div style="font-size:9px;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:6px">Exercise Name</div>
+          <input id="cName" type="text" placeholder="${ex.name}" style="background:#0a0a0a;border:1px solid #2a2a2a;border-radius:2px;color:#f0ede6;padding:10px;font-size:14px;width:100%;font-family:Georgia,serif;outline:none">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div>
+            <div style="font-size:9px;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:6px">Sets</div>
+            <input id="cSets" type="number" placeholder="${ex.sets}" style="background:#0a0a0a;border:1px solid #2a2a2a;border-radius:2px;color:#f0ede6;padding:10px;font-size:14px;width:100%;font-family:'Courier New',monospace;outline:none">
+          </div>
+          <div>
+            <div style="font-size:9px;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:6px">Reps / Duration</div>
+            <input id="cReps" type="text" placeholder="${ex.reps}" style="background:#0a0a0a;border:1px solid #2a2a2a;border-radius:2px;color:#f0ede6;padding:10px;font-size:14px;width:100%;font-family:'Courier New',monospace;outline:none">
+          </div>
+        </div>
+        <div>
+          <div style="font-size:9px;color:#555;letter-spacing:2px;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:6px">Coaching Note (optional)</div>
+          <input id="cNotes" type="text" placeholder="${ex.notes}" style="background:#0a0a0a;border:1px solid #2a2a2a;border-radius:2px;color:#f0ede6;padding:10px;font-size:14px;width:100%;font-family:Georgia,serif;outline:none;font-style:italic">
+        </div>
+        <button id="saveCustom" style="background:${color};border:none;color:#000;padding:12px;border-radius:2px;font-size:11px;font-family:'Courier New',monospace;letter-spacing:2px;font-weight:800;margin-top:4px">SAVE CUSTOM EXERCISE</button>
+      </div>
+      <button id="keepOrig" style="width:100%;background:transparent;border:1px solid #1e1e1e;color:#444;padding:12px;border-radius:2px;font-size:11px;font-family:'Courier New',monospace;letter-spacing:2px;margin-top:10px">KEEP ORIGINAL</button>
+    </div>
+  </div>`;
+}
+
+// ─── TRACKING ─────────────────────────────────────────────────────────────────
+function renderTracking() {
+  const {di,ei,date}=S.tracking;
+  const dd=days(); const td=dd[di]; const ex=td.exercises[ei];
+  const key=`${td.label}|${date}`;
+  const exLog=((S.logs[key]||{})[ex.name])||{};
+  const allKeys=Object.keys(S.logs).filter(k=>k.startsWith(td.label+"|")&&k!==key).sort().reverse();
+  const prevKey=allKeys[0];
+  const prevLog=prevKey?((S.logs[prevKey]||{})[ex.name]||{}):null;
+  const hasPrev=prevLog&&Object.values(prevLog).some(s=>s.weight||s.reps);
+  const pct=((ei+1)/td.exercises.length*100).toFixed(1);
+
+  let sHtml="";
+  for(let i=0;i<ex.sets;i++){
+    const s=exLog[i]||{}; const done=s.done;
+    const wPh=hasPrev?(prevLog[i]?.weight||"0"):"0";
+    const rPh=hasPrev?(prevLog[i]?.reps||String(ex.reps).split("–")[0]):String(ex.reps).split("–")[0];
+    sHtml+=`<div style="display:grid;grid-template-columns:36px 1fr 1fr 44px;gap:8px;align-items:center;border:1px solid ${done?td.color+"55":"#1e1e1e"};background:${done?td.color+"1a":"#111"};border-radius:2px;padding:10px;transition:all .2s">
+      <div style="font-family:'Courier New',monospace;font-size:12px;color:${done?td.color:"#555"};font-weight:700">S${i+1}</div>
+      <input type="number" inputmode="decimal" placeholder="${wPh}" value="${s.weight||""}" data-field="weight" data-set="${i}" style="background:#0a0a0a;border:1px solid #2a2a2a;border-radius:2px;color:#f0ede6;padding:10px;font-size:16px;width:100%;font-family:'Courier New',monospace;outline:none;box-sizing:border-box">
+      <input type="number" inputmode="numeric" placeholder="${rPh}" value="${s.reps||""}" data-field="reps" data-set="${i}" style="background:#0a0a0a;border:1px solid #2a2a2a;border-radius:2px;color:#f0ede6;padding:10px;font-size:16px;width:100%;font-family:'Courier New',monospace;outline:none;box-sizing:border-box">
+      <button class="dbtn" data-set="${i}" style="background:${done?td.color:"transparent"};border:1px solid ${done?td.color:"#333"};border-radius:2px;color:${done?"#000":"#444"};font-size:16px;padding:10px 0;line-height:1;width:100%;transition:all .2s">✓</button>
+    </div>`;
+  }
+
+  let prevHtml="";
+  if(hasPrev){
+    let chips="";
+    for(let i=0;i<ex.sets;i++){const s=prevLog[i]||{};if(s.weight||s.reps)chips+=`<div style="background:#141414;border:1px solid #222;border-radius:2px;padding:5px 10px;font-size:12px;font-family:'Courier New',monospace;color:#555">S${i+1}: ${s.weight?s.weight+"kg":"—"} × ${s.reps||"—"}</div>`;}
+    prevHtml=`<div style="background:#0d0d0d;border:1px solid #1a1a1a;border-radius:2px;padding:12px 16px;margin-bottom:16px"><div style="font-size:10px;letter-spacing:3px;color:#444;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:8px">Last time (${prevKey.split("|")[1]})</div><div style="display:flex;gap:6px;flex-wrap:wrap">${chips}</div></div>`;
+  }
+
+  const prevBtn=ei>0?`<button id="prevEx" style="flex:0.5;background:#111;border:1px solid #2a2a2a;color:#888;padding:14px;border-radius:2px;font-size:12px;font-family:'Courier New',monospace;letter-spacing:2px">← PREV</button>`:"";
+  const isLast=ei>=td.exercises.length-1;
+  const nextLabel=isLast?"✓ FINISH WORKOUT":`NEXT → ${td.exercises[ei+1].name.split(" ")[0]}`;
+  const nextId=isLast?"finishEx":"nextEx";
+
+  return `
+  <div style="background:#0a0a0a;min-height:100vh">
+    <div style="background:#111;border-bottom:1px solid #1e1e1e;padding:16px 20px;display:flex;align-items:center;gap:16px">
+      <button id="backBtn" style="background:none;border:none;color:#888;font-size:22px;padding:0;line-height:1">←</button>
+      <div style="flex:1">
+        <div style="font-size:10px;letter-spacing:4px;color:${td.color};text-transform:uppercase;font-family:'Courier New',monospace">${td.day} · ${date}</div>
+        <div style="font-size:17px;font-weight:800">${ex.name}</div>
+      </div>
+      <div style="font-size:11px;color:#444;font-family:'Courier New',monospace">${ei+1}/${td.exercises.length}</div>
+    </div>
+    <div style="height:2px;background:#1a1a1a"><div style="height:2px;background:${td.color};width:${pct}%;transition:width .3s"></div></div>
     <div style="max-width:600px;margin:0 auto;padding:20px 16px">
-      <div style="background:#111;border:1px solid ${tDay.color}33;border-radius:2px;padding:14px 16px;margin-bottom:16px;display:flex;gap:20px;align-items:flex-start">
-        <div style="text-align:center;min-width:52px">
-          <div style="font-size:9px;color:#555;letter-spacing:3px;font-family:'Courier New',monospace;text-transform:uppercase">Sets</div>
-          <div style="font-size:24px;font-weight:900;color:${tDay.color}">${ex.sets}</div>
-        </div>
-        <div style="text-align:center;min-width:52px">
-          <div style="font-size:9px;color:#555;letter-spacing:3px;font-family:'Courier New',monospace;text-transform:uppercase">Reps</div>
-          <div style="font-size:24px;font-weight:900;color:${tDay.color}">${ex.reps}</div>
-        </div>
-        <div style="flex:1">
-          <div style="font-size:9px;color:#555;letter-spacing:2px;font-family:'Courier New',monospace;text-transform:uppercase;margin-bottom:4px">Tip</div>
-          <div style="font-size:12px;color:#777;font-style:italic;line-height:1.4">${ex.notes}</div>
-        </div>
+      <div style="background:#111;border:1px solid ${td.color}33;border-radius:2px;padding:14px 16px;margin-bottom:16px;display:flex;gap:20px;align-items:flex-start">
+        <div style="text-align:center;min-width:52px"><div style="font-size:9px;color:#555;letter-spacing:3px;font-family:'Courier New',monospace;text-transform:uppercase">Sets</div><div style="font-size:24px;font-weight:900;color:${td.color}">${ex.sets}</div></div>
+        <div style="text-align:center;min-width:52px"><div style="font-size:9px;color:#555;letter-spacing:3px;font-family:'Courier New',monospace;text-transform:uppercase">Reps</div><div style="font-size:24px;font-weight:900;color:${td.color}">${ex.reps}</div></div>
+        <div style="flex:1"><div style="font-size:9px;color:#555;letter-spacing:2px;font-family:'Courier New',monospace;text-transform:uppercase;margin-bottom:4px">Tip</div><div style="font-size:12px;color:#777;font-style:italic;line-height:1.4">${ex.notes}</div></div>
       </div>
       ${prevHtml}
       <div style="display:flex;flex-direction:column;gap:6px">
         <div style="display:grid;grid-template-columns:36px 1fr 1fr 44px;gap:8px;padding:0 2px 4px">
-          <div class="col-hd">SET</div><div class="col-hd">WEIGHT (kg)</div><div class="col-hd">REPS</div><div class="col-hd"></div>
+          <div style="font-size:9px;color:#444;font-family:'Courier New',monospace;letter-spacing:2px;text-transform:uppercase">SET</div>
+          <div style="font-size:9px;color:#444;font-family:'Courier New',monospace;letter-spacing:2px;text-transform:uppercase">WEIGHT</div>
+          <div style="font-size:9px;color:#444;font-family:'Courier New',monospace;letter-spacing:2px;text-transform:uppercase">REPS</div>
+          <div></div>
         </div>
-        ${setsHtml}
+        ${sHtml}
       </div>
-      <div style="display:flex;gap:8px;margin-top:24px">${prevBtn}${nextBtn}</div>
+      <div style="display:flex;gap:8px;margin-top:24px">${prevBtn}<button id="${nextId}" style="flex:2;background:${td.color};border:none;color:#000;padding:14px;border-radius:2px;font-size:12px;font-family:'Courier New',monospace;letter-spacing:2px;font-weight:800">${nextLabel}</button></div>
     </div>
-  </div>
-  <style>
-    .col-hd{font-size:9px;color:#444;font-family:'Courier New',monospace;letter-spacing:2px;text-transform:uppercase}
-    .set-row{display:grid;grid-template-columns:36px 1fr 1fr 44px;gap:8px;align-items:center;border:1px solid;border-radius:2px;padding:10px;transition:all .2s}
-    .set-num{font-family:'Courier New',monospace;font-size:12px;font-weight:700}
-    .set-input{background:#0a0a0a;border:1px solid #2a2a2a;border-radius:2px;color:#f0ede6;padding:10px;font-size:16px;width:100%;font-family:'Courier New',monospace;outline:none;box-sizing:border-box}
-    .done-btn{border:1px solid;border-radius:2px;font-size:16px;padding:10px 0;line-height:1;width:100%;transition:all .2s}
-    .nav-btn{flex:1;border:none;padding:14px;border-radius:2px;font-size:12px;font-family:'Courier New',monospace;letter-spacing:2px;font-weight:800}
-    .nav-btn.secondary{background:#111;border:1px solid #2a2a2a;color:#888;flex:0.5}
-    .nav-btn.primary{color:#000}
-    .prev-box{background:#0d0d0d;border:1px solid #1a1a1a;border-radius:2px;padding:12px 16px;margin-bottom:16px}
-    .prev-label{font-size:10px;letter-spacing:3px;color:#444;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:8px}
-    .chip-row{display:flex;gap:6px;flex-wrap:wrap}
-    .prev-chip{background:#141414;border:1px solid #222;border-radius:2px;padding:5px 10px;font-size:12px;font-family:'Courier New',monospace;color:#555}
-  </style>`;
+  </div>`;
 }
 
-// ─── MAIN SCREEN ─────────────────────────────────────────────────────────────
+// ─── MAIN ─────────────────────────────────────────────────────────────────────
 function renderMain() {
-  const tabs = ["program","history","nutrition","recovery","progression"];
-  const tabsHtml = tabs.map(t => `
-    <button class="tab-btn ${state.activeTab===t?"tab-active":""}" data-tab="${t}">${t}</button>`).join("");
-
-  let content = "";
-  if (state.activeTab === "program") content = renderProgram();
-  else if (state.activeTab === "history") content = renderHistory();
-  else if (state.activeTab === "nutrition") content = renderNutrition();
-  else if (state.activeTab === "recovery") content = renderRecovery();
-  else if (state.activeTab === "progression") content = renderProgression();
-
+  const tabs=["program","history","nutrition","recovery","progression"];
+  const tabsHtml=tabs.map(t=>`<button class="tbtn" data-t="${t}" style="background:${S.tab===t?"#f0ede6":"transparent"};color:${S.tab===t?"#0a0a0a":"#666"};border:1px solid ${S.tab===t?"#f0ede6":"#333"};padding:7px 14px;border-radius:2px;font-size:10px;letter-spacing:3px;text-transform:uppercase;font-family:'Courier New',monospace;transition:all .2s">${t}</button>`).join("");
+  let content="";
+  if(S.tab==="program") content=renderProg();
+  else if(S.tab==="history") content=renderHist();
+  else if(S.tab==="nutrition") content=renderInfo(NUTRITION,"Nutrition Blueprint","Food is the other half of the program");
+  else if(S.tab==="recovery") content=renderInfo(RECOVERY,"Recovery Protocol","Growth happens outside the gym");
+  else if(S.tab==="progression") content=renderProgression();
   return `
   <div style="background:#0a0a0a;min-height:100vh">
     <div style="background:linear-gradient(135deg,#1a1a1a 0%,#111 100%);border-bottom:1px solid #222;padding:28px 24px 20px;text-align:center">
@@ -265,55 +297,35 @@ function renderMain() {
       <div style="display:flex;gap:8px;justify-content:center;margin-top:18px;flex-wrap:wrap">${tabsHtml}</div>
     </div>
     <div style="max-width:800px;margin:0 auto;padding:24px 16px">${content}</div>
-  </div>
-  <style>
-    .tab-btn{background:transparent;color:#666;border:1px solid #333;padding:7px 14px;border-radius:2px;font-size:10px;letter-spacing:3px;text-transform:uppercase;font-family:'Courier New',monospace;transition:all .2s}
-    .tab-active{background:#f0ede6 !important;color:#0a0a0a !important;border-color:#f0ede6 !important}
-    .day-tab{background:#1a1a1a;color:#666;border:1px solid #2a2a2a;padding:8px 12px;border-radius:2px;font-size:11px;font-family:'Courier New',monospace;transition:all .2s}
-    .ex-row{background:#0f0f0f;border:1px solid #1a1a1a;border-radius:2px;cursor:pointer;transition:all .15s}
-    .ex-row:hover{border-color:#333}
-    .info-card{background:#111;border:1px solid #1e1e1e;border-radius:2px;padding:16px 20px;display:flex;gap:16px;align-items:flex-start}
-    .section-title{font-size:24px;margin:0 0 4px;font-weight:800;color:#f0ede6}
-    .section-sub{margin:0 0 24px;color:#555;font-size:13px;font-family:'Courier New',monospace}
-  </style>`;
+  </div>`;
 }
 
-function renderProgram() {
-  const day = program.days[state.activeDay];
-  const today = todayStr();
-  const sessionKey = `${day.label}|${today}`;
-  const sessionLog = state.logs[sessionKey] || {};
+function renderProg() {
+  const dd=days(); const d=dd[S.day]; const t=today(); const sKey=`${d.label}|${t}`; const sLog=S.logs[sKey]||{};
+  const logged=d.exercises.filter(ex=>Object.values(sLog[ex.name]||{}).some(s=>s.weight||s.reps)).length;
+  const isCustom=!!S.custom;
 
-  const loggedCount = day.exercises.filter(ex =>
-    Object.values(sessionLog[ex.name] || {}).some(s => s.weight || s.reps)
-  ).length;
+  const schedHtml=SCHEDULE.map(s=>`<div style="background:${s.color==="#333"?"#0f0f0f":"#111"};border:1px solid ${s.color==="#333"?"#1a1a1a":s.color+"44"};border-radius:2px;padding:8px 4px;text-align:center"><div style="font-size:9px;font-family:'Courier New',monospace;color:${s.color==="#333"?"#333":s.color};letter-spacing:1px;margin-bottom:4px">${s.day}</div><div style="font-size:8px;color:${s.color==="#333"?"#2a2a2a":"#555"};line-height:1.3">${s.label.split(" — ")[0]}</div></div>`).join("");
+  const dayTabsHtml=dd.map((d2,i)=>`<button class="dtab" data-i="${i}" style="flex-shrink:0;background:${S.day===i?d2.color:"#1a1a1a"};color:${S.day===i?"#0a0a0a":"#666"};border:1px solid ${S.day===i?d2.color:"#2a2a2a"};padding:8px 12px;border-radius:2px;font-size:11px;font-family:'Courier New',monospace;transition:all .2s;font-weight:${S.day===i?"700":"400"}">${d2.day.slice(0,3).toUpperCase()}</button>`).join("");
 
-  const schedHtml = program.schedule.map(s => `
-    <div style="background:${s.color==="#333"?"#0f0f0f":"#111"};border:1px solid ${s.color==="#333"?"#1a1a1a":s.color+"44"};border-radius:2px;padding:8px 4px;text-align:center">
-      <div style="font-size:9px;font-family:'Courier New',monospace;color:${s.color==="#333"?"#333":s.color};letter-spacing:1px;margin-bottom:4px">${s.day}</div>
-      <div style="font-size:8px;color:${s.color==="#333"?"#2a2a2a":"#555"};line-height:1.3">${s.label.split(" — ")[0]}</div>
-    </div>`).join("");
-
-  const dayTabsHtml = program.days.map((d, i) => `
-    <button class="day-tab" data-dayidx="${i}" style="background:${state.activeDay===i?d.color:"#1a1a1a"};color:${state.activeDay===i?"#0a0a0a":"#666"};border-color:${state.activeDay===i?d.color:"#2a2a2a"};font-weight:${state.activeDay===i?"700":"400"}">
-      ${d.day.slice(0,3).toUpperCase()}
-    </button>`).join("");
-
-  const exRowsHtml = day.exercises.map((ex, i) => {
-    const exLog = sessionLog[ex.name] || {};
-    const doneSets = Object.values(exLog).filter(s => s.done).length;
-    const hasAny = Object.values(exLog).some(s => s.weight || s.reps);
-    return `
-    <div class="ex-row" data-exidx="${i}" style="background:${hasAny?day.color+"0d":"#0f0f0f"};border-color:${hasAny?day.color+"33":"#1a1a1a"}">
-      <div style="display:grid;grid-template-columns:1fr 50px 80px 72px;padding:13px 16px;align-items:center">
-        <div style="display:flex;align-items:center;gap:10px">
-          <span style="width:18px;height:18px;border-radius:50%;background:${day.color}22;border:1px solid ${day.color}44;display:flex;align-items:center;justify-content:center;font-size:9px;color:${day.color};flex-shrink:0;font-family:'Courier New',monospace">${i+1}</span>
-          <span style="font-size:14px;color:#d0c8b8">${ex.name}</span>
+  const exHtml=d.exercises.map((ex,i)=>{
+    const exLog=sLog[ex.name]||{};
+    const done=Object.values(exLog).filter(s=>s.done).length;
+    const has=Object.values(exLog).some(s=>s.weight||s.reps);
+    const isMod=isCustom&&DEFAULT_DAYS[S.day]?.exercises[i]?.name!==ex.name;
+    return `<div style="display:flex;gap:2px;margin-bottom:2px">
+      <div class="exrow" data-i="${i}" style="flex:1;background:${has?d.color+"0d":"#0f0f0f"};border:1px solid ${has?d.color+"33":"#1a1a1a"};border-radius:2px;cursor:${S.editMode?"default":"pointer"};transition:all .15s">
+        <div style="display:grid;grid-template-columns:1fr 50px 80px 72px;padding:13px 16px;align-items:center">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="width:18px;height:18px;border-radius:50%;background:${d.color}22;border:1px solid ${d.color}44;display:flex;align-items:center;justify-content:center;font-size:9px;color:${d.color};flex-shrink:0;font-family:'Courier New',monospace">${i+1}</span>
+            <div style="font-size:14px;color:#d0c8b8">${ex.name}${isMod?` <span style="font-size:9px;color:${d.color};font-family:'Courier New',monospace;letter-spacing:1px;vertical-align:middle">CUSTOM</span>`:""}</div>
+          </div>
+          <div style="text-align:center;font-family:'Courier New',monospace;color:#555;font-size:13px">${ex.sets}</div>
+          <div style="text-align:center;font-family:'Courier New',monospace;color:#555;font-size:12px">${ex.reps}</div>
+          <div style="text-align:center">${has?`<span style="font-size:11px;font-family:'Courier New',monospace;color:${d.color}">${done}/${ex.sets} ✓</span>`:`<span style="font-size:11px;color:#2a2a2a;font-family:'Courier New',monospace">—</span>`}</div>
         </div>
-        <div style="text-align:center;font-family:'Courier New',monospace;color:#555;font-size:13px">${ex.sets}</div>
-        <div style="text-align:center;font-family:'Courier New',monospace;color:#555;font-size:12px">${ex.reps}</div>
-        <div style="text-align:center">${hasAny?`<span style="font-size:11px;font-family:'Courier New',monospace;color:${day.color}">${doneSets}/${ex.sets} ✓</span>`:`<span style="font-size:11px;color:#2a2a2a;font-family:'Courier New',monospace">—</span>`}</div>
       </div>
+      ${S.editMode?`<button class="swapbtn" data-i="${i}" style="background:#1a1a1a;border:1px solid #2a2a2a;color:#888;padding:0 14px;border-radius:2px;font-size:11px;font-family:'Courier New',monospace;flex-shrink:0;white-space:nowrap">⇄ swap</button>`:""}
     </div>`;
   }).join("");
 
@@ -323,190 +335,130 @@ function renderProgram() {
       <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">${schedHtml}</div>
     </div>
     <div style="display:flex;gap:6px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px">${dayTabsHtml}</div>
-    <div style="border-left:3px solid ${day.color};padding-left:16px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:flex-start">
+    <div style="border-left:3px solid ${d.color};padding-left:16px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
       <div>
-        <div style="font-size:10px;color:${day.color};letter-spacing:4px;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:2px">${day.day}</div>
-        <h2 style="font-size:20px;margin:0;font-weight:800;color:#f0ede6">${day.label}</h2>
-        <div style="color:#555;font-size:12px;margin-top:2px;font-family:'Courier New',monospace">${loggedCount>0?`${loggedCount}/${day.exercises.length} logged today`:`${day.exercises.length} exercises`}</div>
+        <div style="font-size:10px;color:${d.color};letter-spacing:4px;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:2px">${d.day}</div>
+        <h2 style="font-size:20px;margin:0;font-weight:800;color:#f0ede6">${d.label}</h2>
+        <div style="color:#555;font-size:12px;margin-top:2px;font-family:'Courier New',monospace">${logged>0?`${logged}/${d.exercises.length} logged today`:`${d.exercises.length} exercises`}</div>
       </div>
-      <button id="startBtn" style="background:${day.color};border:none;color:#000;padding:10px 18px;border-radius:2px;font-size:11px;font-family:'Courier New',monospace;letter-spacing:2px;font-weight:800;flex-shrink:0">▶ START</button>
+      <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end">
+        <button id="editToggle" style="background:${S.editMode?"#f0ede6":"transparent"};color:${S.editMode?"#0a0a0a":"#666"};border:1px solid ${S.editMode?"#f0ede6":"#444"};padding:8px 14px;border-radius:2px;font-size:10px;font-family:'Courier New',monospace;letter-spacing:2px">${S.editMode?"✓ DONE EDITING":"✏ EDIT"}</button>
+        <button id="startBtn" style="background:${d.color};border:none;color:#000;padding:10px 18px;border-radius:2px;font-size:11px;font-family:'Courier New',monospace;letter-spacing:2px;font-weight:800">▶ START</button>
+      </div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:2px">
-      <div style="display:grid;grid-template-columns:1fr 50px 80px 72px;padding:6px 16px;font-size:9px;letter-spacing:3px;color:#444;text-transform:uppercase;font-family:'Courier New',monospace">
+    ${S.editMode&&isCustom?`<div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button id="resetBtn" style="background:transparent;border:1px solid #333;color:#555;padding:6px 14px;border-radius:2px;font-size:10px;font-family:'Courier New',monospace;letter-spacing:2px">↺ RESET TO DEFAULTS</button></div>`:""}
+    <div>
+      <div style="display:grid;grid-template-columns:1fr 50px 80px 72px;padding:6px 16px;font-size:9px;letter-spacing:3px;color:#444;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:2px">
         <span>Exercise</span><span style="text-align:center">Sets</span><span style="text-align:center">Reps</span><span style="text-align:center">Today</span>
       </div>
-      ${exRowsHtml}
+      ${exHtml}
     </div>`;
 }
 
-function renderHistory() {
-  const keys = Object.keys(state.logs).sort().reverse();
-  let html = `<h2 class="section-title">Workout History</h2><p class="section-sub">Every session logged — saved in your browser</p>`;
-  if (!keys.length) {
-    html += `<div style="text-align:center;padding:48px 24px;color:#333;font-family:'Courier New',monospace;font-size:13px;line-height:2">No sessions yet.<br>Hit ▶ START on any day to begin.</div>`;
-    return html;
-  }
-  keys.forEach(key => {
-    const [dayLabel, date] = key.split("|");
-    const dayData = program.days.find(d => d.label === dayLabel);
-    const color = dayData?.color || "#888";
-    const session = state.logs[key];
-    const exNames = Object.keys(session).filter(n => Object.values(session[n]).some(s => s.weight || s.reps));
-    if (!exNames.length) return;
-    let exHtml = exNames.map(exName => {
-      const sets = session[exName];
-      const entries = Object.entries(sets).filter(([,s]) => s.weight || s.reps);
-      const chips = entries.map(([si,s]) => `<div style="background:${s.done?color+"22":"#1a1a1a"};border:1px solid ${s.done?color+"44":"#222"};border-radius:2px;padding:5px 10px;font-size:12px;font-family:'Courier New',monospace;color:${s.done?color:"#555"}">S${parseInt(si)+1}: ${s.weight?s.weight+"kg":"—"} × ${s.reps||"—"}</div>`).join("");
-      return `<div style="margin-bottom:12px"><div style="font-size:11px;color:#666;margin-bottom:6px;font-family:'Courier New',monospace;letter-spacing:1px">${exName}</div><div style="display:flex;gap:6px;flex-wrap:wrap">${chips}</div></div>`;
+function renderHist() {
+  const keys=Object.keys(S.logs).sort().reverse();
+  let html=`<h2 style="font-size:24px;margin:0 0 4px;font-weight:800;color:#f0ede6">Workout History</h2><p style="margin:0 0 24px;color:#555;font-size:13px;font-family:'Courier New',monospace">Every session saved in your browser</p>`;
+  if(!keys.length) return html+`<div style="text-align:center;padding:48px 24px;color:#333;font-family:'Courier New',monospace;font-size:13px;line-height:2">No sessions yet.<br>Hit ▶ START on any day to begin.</div>`;
+  keys.forEach(key=>{
+    const [label,date]=key.split("|");
+    const dayD=days().find(d=>d.label===label); const color=dayD?.color||"#888";
+    const sess=S.logs[key];
+    const exNames=Object.keys(sess).filter(n=>Object.values(sess[n]).some(s=>s.weight||s.reps));
+    if(!exNames.length) return;
+    const exHtml=exNames.map(n=>{
+      const entries=Object.entries(sess[n]).filter(([,s])=>s.weight||s.reps);
+      const chips=entries.map(([si,s])=>`<div style="background:${s.done?color+"22":"#1a1a1a"};border:1px solid ${s.done?color+"44":"#222"};border-radius:2px;padding:5px 10px;font-size:12px;font-family:'Courier New',monospace;color:${s.done?color:"#555"}">S${parseInt(si)+1}: ${s.weight?s.weight+"kg":"—"} × ${s.reps||"—"}</div>`).join("");
+      return `<div style="margin-bottom:12px"><div style="font-size:11px;color:#666;margin-bottom:6px;font-family:'Courier New',monospace;letter-spacing:1px">${n}</div><div style="display:flex;gap:6px;flex-wrap:wrap">${chips}</div></div>`;
     }).join("");
-    html += `
-      <div style="background:#111;border:1px solid ${color}33;border-radius:2px;overflow:hidden;margin-bottom:16px">
-        <div style="background:${color}18;padding:12px 16px;border-bottom:1px solid ${color}22;display:flex;justify-content:space-between;align-items:center">
-          <div><div style="font-size:10px;color:${color};letter-spacing:3px;text-transform:uppercase;font-family:'Courier New',monospace">${date}</div><div style="font-size:15px;font-weight:700">${dayLabel}</div></div>
-          <div style="font-size:11px;color:#555;font-family:'Courier New',monospace">${exNames.length} exercises</div>
-        </div>
-        <div style="padding:14px 16px">${exHtml}</div>
-      </div>`;
+    html+=`<div style="background:#111;border:1px solid ${color}33;border-radius:2px;overflow:hidden;margin-bottom:16px"><div style="background:${color}18;padding:12px 16px;border-bottom:1px solid ${color}22;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:10px;color:${color};letter-spacing:3px;text-transform:uppercase;font-family:'Courier New',monospace">${date}</div><div style="font-size:15px;font-weight:700">${label}</div></div><div style="font-size:11px;color:#555;font-family:'Courier New',monospace">${exNames.length} exercises</div></div><div style="padding:14px 16px">${exHtml}</div></div>`;
   });
   return html;
 }
 
-function renderNutrition() {
-  const cards = program.nutrition.map(n => `
-    <div class="info-card" style="margin-bottom:12px">
-      <span style="font-size:20px;flex-shrink:0;padding-top:2px">${n.icon}</span>
-      <div>
-        <div style="font-size:12px;letter-spacing:3px;color:#888;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:6px">${n.title}</div>
-        <div style="font-size:14px;color:#bbb;line-height:1.6">${n.text}</div>
-      </div>
-    </div>`).join("");
-  const meals = program.meals.map(([meal,food], i, arr) => `
-    <div style="padding-bottom:12px;margin-bottom:12px;border-bottom:${i<arr.length-1?"1px solid #1a1a1a":"none"}">
-      <div style="font-size:10px;color:#555;font-family:'Courier New',monospace;letter-spacing:1px">${meal}</div>
-      <div style="font-size:14px;color:#ddd;margin-top:3px">${food}</div>
-    </div>`).join("");
-  return `
-    <h2 class="section-title">Nutrition Blueprint</h2><p class="section-sub">Food is the other half of the program</p>
-    ${cards}
-    <div style="margin-top:24px;background:#111;border:1px solid #222;border-radius:2px;padding:20px">
-      <div style="font-size:11px;letter-spacing:4px;color:#666;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:14px">Sample Day of Eating</div>
-      ${meals}
-    </div>`;
-}
-
-function renderRecovery() {
-  const cards = program.recovery.map(r => `
-    <div class="info-card" style="margin-bottom:12px">
-      <span style="font-size:20px;flex-shrink:0;padding-top:2px">${r.icon}</span>
-      <div>
-        <div style="font-size:12px;letter-spacing:3px;color:#888;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:6px">${r.title}</div>
-        <div style="font-size:14px;color:#bbb;line-height:1.6">${r.text}</div>
-      </div>
-    </div>`).join("");
-  return `<h2 class="section-title">Recovery Protocol</h2><p class="section-sub">Growth happens outside the gym</p>${cards}`;
+function renderInfo(items,title,sub) {
+  const cards=items.map(n=>`<div style="background:#111;border:1px solid #1e1e1e;border-radius:2px;padding:16px 20px;display:flex;gap:16px;align-items:flex-start;margin-bottom:12px"><span style="font-size:20px;flex-shrink:0;padding-top:2px">${n.icon}</span><div><div style="font-size:12px;letter-spacing:3px;color:#888;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:6px">${n.title}</div><div style="font-size:14px;color:#bbb;line-height:1.6">${n.text}</div></div></div>`).join("");
+  let extra="";
+  if(title.includes("Nutrition")){const meals=MEALS.map(([m,f],i,a)=>`<div style="padding-bottom:12px;margin-bottom:12px;border-bottom:${i<a.length-1?"1px solid #1a1a1a":"none"}"><div style="font-size:10px;color:#555;font-family:'Courier New',monospace;letter-spacing:1px">${m}</div><div style="font-size:14px;color:#ddd;margin-top:3px">${f}</div></div>`).join("");extra=`<div style="margin-top:24px;background:#111;border:1px solid #222;border-radius:2px;padding:20px"><div style="font-size:11px;letter-spacing:4px;color:#666;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:14px">Sample Day of Eating</div>${meals}</div>`;}
+  return `<h2 style="font-size:24px;margin:0 0 4px;font-weight:800;color:#f0ede6">${title}</h2><p style="margin:0 0 24px;color:#555;font-size:13px;font-family:'Courier New',monospace">${sub}</p>${cards}${extra}`;
 }
 
 function renderProgression() {
-  const rules = program.progression.map((p, i) => `
-    <div style="display:flex;gap:16px;align-items:flex-start;background:#111;border:1px solid #1e1e1e;border-radius:2px;padding:16px 20px;margin-bottom:8px">
-      <div style="font-family:'Courier New',monospace;font-size:13px;color:#555;flex-shrink:0">0${i+1}</div>
-      <div style="font-size:15px;color:#d0c8b8;line-height:1.5">${p}</div>
-    </div>`).join("");
-  const periods = program.periodization.map(([weeks,phase,desc]) => `
-    <div style="border-left:2px solid #2a2a2a;padding-left:16px;padding-bottom:14px">
-      <div style="display:flex;gap:12px;align-items:center;margin-bottom:4px">
-        <span style="font-size:11px;color:#555;font-family:'Courier New',monospace">${weeks}</span>
-        <span style="font-size:11px;letter-spacing:2px;color:#777;text-transform:uppercase;font-family:'Courier New',monospace">${phase}</span>
-      </div>
-      <div style="font-size:14px;color:#bbb;line-height:1.5">${desc}</div>
-    </div>`).join("");
-  return `
-    <h2 class="section-title">Progressive Overload</h2><p class="section-sub">The only rule that matters</p>
-    ${rules}
-    <div style="margin-top:24px;background:#111;border:1px solid #2a2a2a;border-radius:2px;padding:20px">
-      <div style="font-size:11px;letter-spacing:4px;color:#666;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:16px">12-Week Periodization</div>
-      ${periods}
-    </div>`;
+  const rules=PROGRESSION.map((p,i)=>`<div style="display:flex;gap:16px;align-items:flex-start;background:#111;border:1px solid #1e1e1e;border-radius:2px;padding:16px 20px;margin-bottom:8px"><div style="font-family:'Courier New',monospace;font-size:13px;color:#555;flex-shrink:0">0${i+1}</div><div style="font-size:15px;color:#d0c8b8;line-height:1.5">${p}</div></div>`).join("");
+  const per=PERIODIZATION.map(([w,ph,d])=>`<div style="border-left:2px solid #2a2a2a;padding-left:16px;padding-bottom:14px"><div style="display:flex;gap:12px;align-items:center;margin-bottom:4px"><span style="font-size:11px;color:#555;font-family:'Courier New',monospace">${w}</span><span style="font-size:11px;letter-spacing:2px;color:#777;text-transform:uppercase;font-family:'Courier New',monospace">${ph}</span></div><div style="font-size:14px;color:#bbb;line-height:1.5">${d}</div></div>`).join("");
+  return `<h2 style="font-size:24px;margin:0 0 4px;font-weight:800;color:#f0ede6">Progressive Overload</h2><p style="margin:0 0 24px;color:#555;font-size:13px;font-family:'Courier New',monospace">The only rule that matters</p>${rules}<div style="margin-top:24px;background:#111;border:1px solid #2a2a2a;border-radius:2px;padding:20px"><div style="font-size:11px;letter-spacing:4px;color:#666;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:16px">12-Week Periodization</div>${per}</div>`;
 }
 
-// ─── Events ───────────────────────────────────────────────────────────────────
-function attachEvents() {
-  // Tab buttons
-  document.querySelectorAll(".tab-btn").forEach(btn => {
-    btn.addEventListener("click", () => { state.activeTab = btn.dataset.tab; render(); });
+// ─── BIND ─────────────────────────────────────────────────────────────────────
+function bind() {
+  document.querySelectorAll(".tbtn").forEach(b=>b.addEventListener("click",()=>{S.tab=b.dataset.t;render();}));
+  document.querySelectorAll(".dtab").forEach(b=>b.addEventListener("click",()=>{S.day=parseInt(b.dataset.i);render();}));
+
+  const et=document.getElementById("editToggle");
+  if(et) et.addEventListener("click",()=>{S.editMode=!S.editMode;render();});
+
+  const rb=document.getElementById("resetBtn");
+  if(rb) rb.addEventListener("click",()=>{if(confirm("Reset all exercises to defaults?")) {resetCustom();render();}});
+
+  const sb=document.getElementById("startBtn");
+  if(sb) sb.addEventListener("click",()=>{S.tracking={di:S.day,ei:0,date:today()};S.editMode=false;render();});
+
+  document.querySelectorAll(".exrow").forEach(r=>{
+    r.addEventListener("click",()=>{if(!S.editMode){S.tracking={di:S.day,ei:parseInt(r.dataset.i),date:today()};render();}});
   });
 
-  // Day tabs
-  document.querySelectorAll(".day-tab").forEach(btn => {
-    btn.addEventListener("click", () => { state.activeDay = parseInt(btn.dataset.dayidx); render(); });
+  document.querySelectorAll(".swapbtn").forEach(b=>{
+    b.addEventListener("click",()=>{S.swapModal={di:S.day,ei:parseInt(b.dataset.i)};render();});
   });
 
-  // Start workout
-  const startBtn = document.getElementById("startBtn");
-  if (startBtn) {
-    startBtn.addEventListener("click", () => {
-      state.tracking = { dayIdx: state.activeDay, exIdx: 0, date: todayStr() };
-      render();
+  // Swap modal
+  const cs=document.getElementById("closeSwap");
+  if(cs) cs.addEventListener("click",()=>{S.swapModal=null;render();});
+  const ko=document.getElementById("keepOrig");
+  if(ko) ko.addEventListener("click",()=>{S.swapModal=null;render();});
+
+  document.querySelectorAll(".alt-card").forEach(c=>{
+    c.addEventListener("mouseenter",()=>c.style.borderColor="#555");
+    c.addEventListener("mouseleave",()=>c.style.borderColor="#2a2a2a");
+    c.addEventListener("click",()=>{
+      const {di,ei}=S.swapModal;
+      const alts=ALTS[days()[di].exercises[ei].name]||[];
+      swapEx(di,ei,alts[parseInt(c.dataset.i)]);
     });
-  }
-
-  // Exercise row click
-  document.querySelectorAll(".ex-row").forEach(row => {
-    row.addEventListener("click", () => {
-      state.tracking = { dayIdx: state.activeDay, exIdx: parseInt(row.dataset.exidx), date: todayStr() };
-      render();
-    });
   });
 
-  // Back button
-  const backBtn = document.getElementById("backBtn");
-  if (backBtn) backBtn.addEventListener("click", () => { state.tracking = null; render(); });
+  const sc=document.getElementById("saveCustom");
+  if(sc) sc.addEventListener("click",()=>{
+    const {di,ei}=S.swapModal; const orig=days()[di].exercises[ei];
+    const name=document.getElementById("cName").value.trim()||orig.name;
+    const sets=parseInt(document.getElementById("cSets").value)||orig.sets;
+    const reps=document.getElementById("cReps").value.trim()||orig.reps;
+    const notes=document.getElementById("cNotes").value.trim()||orig.notes;
+    swapEx(di,ei,{name,sets,reps,notes});
+  });
 
-  // Tracking: set inputs
-  if (state.tracking) {
-    const { dayIdx, exIdx, date } = state.tracking;
-    const tDay = program.days[dayIdx];
-    const ex = tDay.exercises[exIdx];
+  // Tracking
+  const bb=document.getElementById("backBtn");
+  if(bb) bb.addEventListener("click",()=>{S.tracking=null;render();});
 
-    document.querySelectorAll(".set-input").forEach(input => {
-      input.addEventListener("change", () => {
-        setLog(tDay.label, date, ex.name, parseInt(input.dataset.set), input.dataset.field, input.value);
+  if(S.tracking){
+    const {di,ei,date}=S.tracking; const td=days()[di]; const ex=td.exercises[ei];
+    document.querySelectorAll("input[data-field]").forEach(inp=>{
+      inp.addEventListener("change",()=>setLog(td.label,date,ex.name,parseInt(inp.dataset.set),inp.dataset.field,inp.value));
+    });
+    document.querySelectorAll(".dbtn").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const i=parseInt(btn.dataset.set); const k=`${td.label}|${date}`;
+        const cur=((S.logs[k]||{})[ex.name]||{})[i]||{};
+        setLog(td.label,date,ex.name,i,"done",!cur.done); render();
       });
     });
-
-    document.querySelectorAll(".done-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const i = parseInt(btn.dataset.set);
-        const key = `${tDay.label}|${date}`;
-        const cur = ((state.logs[key] || {})[ex.name] || {})[i] || {};
-        setLog(tDay.label, date, ex.name, i, "done", !cur.done);
-        render();
-      });
-    });
-
-    const prevEx = document.getElementById("prevEx");
-    if (prevEx) prevEx.addEventListener("click", () => {
-      state.tracking.exIdx--;
-      render();
-    });
-
-    const nextEx = document.getElementById("nextEx");
-    if (nextEx) nextEx.addEventListener("click", () => {
-      state.tracking.exIdx++;
-      render();
-    });
-
-    const finishEx = document.getElementById("finishEx");
-    if (finishEx) finishEx.addEventListener("click", () => {
-      state.tracking = null;
-      render();
-    });
+    const pe=document.getElementById("prevEx"); if(pe) pe.addEventListener("click",()=>{S.tracking.ei--;render();});
+    const ne=document.getElementById("nextEx"); if(ne) ne.addEventListener("click",()=>{S.tracking.ei++;render();});
+    const fe=document.getElementById("finishEx"); if(fe) fe.addEventListener("click",()=>{S.tracking=null;render();});
   }
 }
 
-// ─── Init ─────────────────────────────────────────────────────────────────────
-loadLogs();
-render();
+load(); render();
 </script>
 </body>
 </html>
